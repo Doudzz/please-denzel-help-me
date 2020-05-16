@@ -1,3 +1,4 @@
+//Name of student: Edouard JORET 
 // Q1. Create a variable called `denzel` - that can't be redeclared - and assign it the string 'please denzel, help me'
 const denzel = "please denzel, help me";
 
@@ -90,6 +91,7 @@ console.log(police(quotes));
 
 // Q11. Related to the https://www.tvmaze.com/people/66167/denzel-washington link
 // What's the query selector to get all Cast Credits titles (Live with Kelly & Ryan, The Late Show with Stephen Colbert...).
+document.querySelectorAll('#credits > div > article > div > div > strong > a');
 
 // Q12. Related to the https://www.tvmaze.com/people/66167/denzel-washington link
 // How many http requests are performed to render the page?
@@ -101,31 +103,29 @@ console.log(police(quotes));
 //We've got as a response a json document which describe someone called Zach Shirey, and we can see 2 images and one link and some empty values. moreover, its a GET request.
 
 // Q14. Refactor the following codebase with a promise notation
-fs.readFile(filePath, function(err, data) {
-  if (err) {
-    // handle the error, the return is important here
-    // so execution stops here
-    return console.log(err)
-  }
-  // use the data object
-  console.log(data)
-})
+const fs = require('fs').promises;
+const filepath = 'test';
+fs.readFile(filepath)
+ .then((data) => {
+   console.log(data);
+ })
+ .catch((err) =>{
+   console.log(err);
+ })
+
 
 // Q15. Refactor the following codebase with async/await notation
-fetch('http://api.tvmaze.com/search/people?q=denzel+washington')
-  .then(response => {
-    return response.json();
-  })
-  .then(data => {
-    const {person} = data[0];
-    const {id} = person;
-
-    return fetch(`http://api.tvmaze.com/people/${id}/castcredits?embed=show`);
-  })
-  .then(response => {
-    return response.json();
-  })
-  .then(console.log);
+async function main() {
+  let data = await (await fetch("http://api.tvmaze.com/search/people?q=denzel+washington")).json()
+  
+  const {person} = data[0];
+  const {id} = person;
+  
+  let personData = await(await fetch(`http://api.tvmaze.com/people/${id}/castcredits?embed=show`)).json()
+  console.log(JSON.stringify(personData))
+}
+ 
+main()
 
 // Q16. Give me at least 3 memorable websites that engage to continue (because of nice UX/UI AND avoid to give me facebook, airbnb etc...)
 //Twitch, W3schools, Paypal
